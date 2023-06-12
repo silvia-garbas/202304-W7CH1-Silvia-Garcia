@@ -71,21 +71,36 @@ describe('Given SampleRepo Class', () => {
       expect(fs.writeFile).toHaveBeenCalled();
     });
   });
+describe('Given a ThingsRepo class', () => {
+  const repo = new SampleRepo();
+  describe('When it is instantiated and queryById method is called but the id is not found', () => {
+    test('Then it should throw an error', async () => {
+      const mockSample = [{ id: '1', user: '' }];
+      const mockId = '10';
+      (fs.readFile as jest.Mock).mockResolvedValue(JSON.stringify(mockSample));
 
-  // Comentado para seguir probando:
-  //  Describe('When it is instantiated and delete method is called but the id is not found', () => {
-  //     test('Then it should throw an error', async () => {
-  //       const error = new HttpError(404, 'Not Found');
-  //       const mockSamples = [
-  //         { id: '1', user: '' },
-  //         { id: '2', user: '' },
-  //       ] as Sample[];
-  //       const mockId = '10';
-  //       (fs.readFile as jest.Mock).mockResolvedValueOnce(
-  //         JSON.stringify(mockSamples)
-  //       );
-  //       const result = await repo.delete(mockId);
-  //       expect(result).rejects.toThrow(error);
-  //     });
-  //   });
+      try {
+        await repo.queryById(mockId);
+      } catch (error) {
+        expect(error as HttpError).toBeInstanceOf(HttpError);
+        expect((error as HttpError).message).toBe('Bad id for the query');
+      }
+    });
+  });
+  describe('When it is instantiated and delete method is called and the id is not found', () => {
+    test('Then it should throw an error', async () => {
+      const mockId = '10';
+      const mockSample = [{ id: '1', user: '' }];
+
+      (fs.readFile as jest.Mock).mockResolvedValue(JSON.stringify(mockSample));
+
+      try {
+        await repo.delete(mockId);
+      } catch (error) {
+        expect(error as HttpError).toBeInstanceOf(HttpError);
+        expect((error as HttpError).message).toBe('Bad id for the delete');
+      }
+    });
+  });
 });
+})
