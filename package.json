@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "description": "",
+  "description": "202304-W7CH1-Silvia-García",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "test:prod": "jest --watchAll --coverage --watchAll=false --passWithNoTests"
   },
   "keywords": [],
-  "author": "Alejandro Cerezo",
+  "author": "Silvia García",
   "license": "ISC",
   "devDependencies": {
     "@types/cors": "^2.8.13",
