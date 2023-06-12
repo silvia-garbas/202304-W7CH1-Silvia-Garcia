@@ -4,7 +4,7 @@ import { SampleController } from './sample.controller';
 
 describe('Given SampleController class', () => {
   describe('When it is instantiated', () => {
-    const mockRepo: SampleRepo = {
+    const mockRepo : SampleRepo = {
       query: jest.fn(),
       queryById: jest.fn(),
       create: jest.fn(),
@@ -30,5 +30,21 @@ describe('Given SampleController class', () => {
       expect(res.send).toHaveBeenCalled();
       expect(mockRepo.queryById).toHaveBeenCalled();
     });
+    test('Then method post should be used', async () =>{
+      await controller.post(req, res, next);
+      expect(res.send).toHaveBeenCalled();
+      // Expect(mockRepo.create).toHaveBeenCalled()
+
+    })
+    test('Then method patch should be used', async () => {
+      await controller.patch(req, res, next);
+      expect(res.send).toHaveBeenCalled()
+
+    })
+    test('Then method delete should be used', async() => {
+      await controller.deleteById(req, res, next);
+      expect(res.send).toHaveBeenCalled()
+      // Expect(mockRepo.delete).toHaveBeenCalled()
+    })
   });
 });
