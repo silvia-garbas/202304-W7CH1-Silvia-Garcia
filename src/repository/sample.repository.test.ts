@@ -42,12 +42,10 @@ describe('Given SampleRepo Class', () => {
   });
   describe('When it is instantiated and update method is called', () => {
     test('Then it should return a Sample', async () => {
-      // Const mockSample = { user: 'a' };
       const mockSamples = [
         { id: '18', user: '' }
-        // { id: '2', user: '' },
       ] as Sample[];
-      // Const mockId = '1';
+
       (fs.readFile as jest.Mock).mockResolvedValueOnce(
         JSON.stringify(mockSamples)
       );
