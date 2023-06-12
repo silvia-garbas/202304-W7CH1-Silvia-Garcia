@@ -42,31 +42,30 @@ describe('Given SampleRepo Class', () => {
   });
   describe('When it is instantiated and update method is called', () => {
     test('Then it should return a Sample', async () => {
-      const mockSample = { user: 'a' };
+      // Const mockSample = { user: 'a' };
       const mockSamples = [
-        { id: '1', user: '' },
-        { id: '2', user: '' },
+        { id: '18', user: '' }
+        // { id: '2', user: '' },
       ] as Sample[];
-      const mockId = '1';
+      // Const mockId = '1';
       (fs.readFile as jest.Mock).mockResolvedValueOnce(
         JSON.stringify(mockSamples)
       );
 
-      const result = await repo.update(mockId, mockSample);
+      const result = await repo.update('18', {user: 'c'});
 
       expect(fs.writeFile).toHaveBeenCalled();
-      expect(result).toEqual({ id: '1', user: 'a' });
+      expect(result).toEqual({ id: '18', user: 'c' });
     });
   });
   describe('When it is instantiated and delete method is called', () => {
     test('Then it should return void', async () => {
-      const mockSamples = [
-        { id: '1', user: '' },
-        { id: '2', user: '' },
+      const mockSample = [
+        { id: '7', user: '' }
       ] as Sample[];
-      const mockId = '1';
+      const mockId = '7';
       (fs.readFile as jest.Mock).mockResolvedValueOnce(
-        JSON.stringify(mockSamples)
+        JSON.stringify(mockSample)
       );
 
       await repo.delete(mockId);
