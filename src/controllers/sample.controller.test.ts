@@ -33,7 +33,7 @@ describe('Given SampleController class', () => {
     test('Then method post should be used', async () =>{
       await controller.post(req, res, next);
       expect(res.send).toHaveBeenCalled();
-      // Expect(mockRepo.create).toHaveBeenCalled()
+      // Expect(mockRepo.create).toHaveBeenCalled()//VA EL NOMBRE DEL MÉTODO DEL DEL REPO
 
     })
     test('Then method patch should be used', async () => {
@@ -44,7 +44,7 @@ describe('Given SampleController class', () => {
     test('Then method delete should be used', async() => {
       await controller.deleteById(req, res, next);
       expect(res.send).toHaveBeenCalled()
-      // Expect(mockRepo.delete).toHaveBeenCalled()
+      // Expect(mockRepo.delete).toHaveBeenCalled()//VA EL NOMBRE DEL MÉTODO DEL REPO
     })
   });
 });
