@@ -101,13 +101,13 @@ describe('Given SampleRepo Class', () => {
     //   });
     // });
     describe('When it is instantiated and delete method is called and the id is not found', () => {
-      test.only('Then it should throw an error', async () => {
+      test('Then it should throw an error', async () => {
         const mockId = '10';
         const mockSample = [{ id: '1', user: '' }];
         (fs.readFile as jest.Mock).mockResolvedValue(
           JSON.stringify(mockSample)
         ); // Esto devuelve mock
-      
+
          await expect(repo.delete(mockId)).rejects.toThrowError(HttpError);
   }); //
 
