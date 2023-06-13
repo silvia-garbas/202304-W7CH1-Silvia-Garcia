@@ -107,11 +107,12 @@ describe('Given SampleRepo Class', () => {
         (fs.readFile as jest.Mock).mockResolvedValue(
           JSON.stringify(mockSample)
         ); // Esto devuelve mock
-        // eslint-disable-next-line max-nested-callbacks
-        expect(() => repo.delete(mockId)).rejects.toThrow(); //
+      
+         await expect(repo.delete(mockId)).rejects.toThrowError(HttpError);
+  }); //
 
         // expect(() => repo.delete(mockId)).toThrowError(HttpError)
       });
     });
   });
-});
+
