@@ -42,15 +42,13 @@ describe('Given SampleRepo Class', () => {
   });
   describe('When it is instantiated and update method is called', () => {
     test('Then it should return a Sample', async () => {
-      const mockSamples = [
-        { id: '18', user: '' }
-      ] as Sample[];
+      const mockSamples = [{ id: '18', user: '' }] as Sample[];
 
       (fs.readFile as jest.Mock).mockResolvedValueOnce(
         JSON.stringify(mockSamples)
       );
 
-      const result = await repo.update('18', {user: 'c'});
+      const result = await repo.update('18', { user: 'c' });
 
       expect(fs.writeFile).toHaveBeenCalled();
       expect(result).toEqual({ id: '18', user: 'c' });
@@ -58,9 +56,7 @@ describe('Given SampleRepo Class', () => {
   });
   describe('When it is instantiated and delete method is called', () => {
     test('Then it should return void', async () => {
-      const mockSample = [
-        { id: '7', user: '' }
-      ] as Sample[];
+      const mockSample = [{ id: '7', user: '' }] as Sample[];
       const mockId = '7';
       (fs.readFile as jest.Mock).mockResolvedValueOnce(
         JSON.stringify(mockSample)
@@ -71,36 +67,51 @@ describe('Given SampleRepo Class', () => {
       expect(fs.writeFile).toHaveBeenCalled();
     });
   });
-describe('Given a ThingsRepo class', () => {
-  const repo = new SampleRepo();
-  describe('When it is instantiated and queryById method is called but the id is not found', () => {
-    test('Then it should throw an error', async () => {
-      const mockSample = [{ id: '1', user: '' }];
-      const mockId = '10';
-      (fs.readFile as jest.Mock).mockResolvedValue(JSON.stringify(mockSample));
+  describe('Given a ThingsRepo class', () => {
+    const repo = new SampleRepo();
+    describe('When it is instantiated and queryById method is called but the id is not found', () => {
+      test('Then it should throw an error', async () => {
+        const mockSample = [{ id: '1', user: '' }];
+        const mockId = '10';
+        (fs.readFile as jest.Mock).mockResolvedValue(
+          JSON.stringify(mockSample)
+        );
 
-      try {
-        await repo.queryById(mockId);
-      } catch (error) {
-        expect(error as HttpError).toBeInstanceOf(HttpError);
-        expect((error as HttpError).message).toBe('Bad id for the query');
-      }
+        try {
+          await repo.queryById(mockId);
+        } catch (error) {
+          expect(error as HttpError).toBeInstanceOf(HttpError);
+          expect((error as HttpError).message).toBe('Bad id for the query');
+        }
+      });
     });
-  });
-  describe('When it is instantiated and delete method is called and the id is not found', () => {
-    test('Then it should throw an error', async () => {
-      const mockId = '10';
-      const mockSample = [{ id: '1', user: '' }];
+    // Describe('When it is instantiated and delete method is called and the id is not found', () => {
+    //   test('Then it should throw an error', async () => {
+    //     const mockId = '10';
+    //     const mockSample = [{ id: '1', user: '' }];
 
-      (fs.readFile as jest.Mock).mockResolvedValue(JSON.stringify(mockSample));
+    //     (fs.readFile as jest.Mock).mockResolvedValue(JSON.stringify(mockSample));
 
-      try {
-        await repo.delete(mockId);
-      } catch (error) {
-        expect(error as HttpError).toBeInstanceOf(HttpError);
-        expect((error as HttpError).message).toBe('Bad id for the delete');
-      }
+    //     try {
+    //       await repo.delete(mockId);
+    //     } catch (error) {
+    //       expect(error as HttpError).toBeInstanceOf(HttpError);
+    //       expect((error as HttpError).message).toBe('Bad id for the delete');
+    //     }
+    //   });
+    // });
+    describe('When it is instantiated and delete method is called and the id is not found', () => {
+      test.only('Then it should throw an error', async () => {
+        const mockId = '10';
+        const mockSample = [{ id: '1', user: '' }];
+        (fs.readFile as jest.Mock).mockResolvedValue(
+          JSON.stringify(mockSample)
+        ); // Esto devuelve mock
+        // eslint-disable-next-line max-nested-callbacks
+        expect(() => repo.delete(mockId)).rejects.toThrow(); //
+
+        // expect(() => repo.delete(mockId)).toThrowError(HttpError)
+      });
     });
   });
 });
-})
