@@ -4,6 +4,7 @@ import cors from 'cors';
 import createDebug from 'debug';
 import { sampleRouter } from './routers/sample.router.js';
 import { errorHandler } from './middleware/error.js';
+import { filmRouter } from './routers/film.router.js';
 const debug = createDebug('W6:App');
 
 export const app = express();
@@ -29,5 +30,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/sample', sampleRouter);
+app.use('/film', filmRouter)
 
 app.use(errorHandler);
