@@ -5,7 +5,7 @@ import { Repo } from './repo.js';
 import { HttpError } from '../types/http.error.js';
 const debug = createDebug('W6:FilmRepo');
 
-export class FilmRepo implements Omit<Repo<Film>, 'search'> {
+export class FilmRepo implements Repo<Film> {
   constructor() {
     debug('Instantiated');
   }
@@ -25,6 +25,17 @@ export class FilmRepo implements Omit<Repo<Film>, 'search'> {
   async create(data: Omit<Film, 'id'>): Promise<Film> {
     const newBook = await FilmModel.create(data);
     return newBook;
+  }
+
+  async search({
+    key,
+    value,
+  }: {
+    key: string;
+    value: unknown;
+  }): Promise<Film[]> {
+    const result = await FilmModel.find({ [key]: value }).exec();
+    return result;
   }
 
   async update(id: string, data: Partial<Film>): Promise<Film> {

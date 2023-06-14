@@ -9,7 +9,7 @@ const debug = createDebug('W6:FilmRouter');
 
 debug('Executed');
 
-const repo: Repo<Film> = new FilmRepo();
+const repo: Repo<Film> = new FilmRepo() as Repo<Film>
 const controller = new FilmController(repo);
 export const filmRouter = createRouter();
 

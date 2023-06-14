@@ -16,6 +16,7 @@ describe('Given SampleController class', () => {
     } as unknown as Request;
     const res = {
       send: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     } as unknown as Response;
     const next = jest.fn() as NextFunction;
     const controller = new SampleController(mockRepo);
@@ -33,18 +34,19 @@ describe('Given SampleController class', () => {
     test('Then method post should be used', async () =>{
       await controller.post(req, res, next);
       expect(res.send).toHaveBeenCalled();
-      // Expect(mockRepo.create).toHaveBeenCalled()//VA EL NOMBRE DEL MÉTODO DEL DEL REPO
+      expect(mockRepo.create).toHaveBeenCalled()// VA EL NOMBRE DEL MÉTODO DEL DEL REPO
 
     })
     test('Then method patch should be used', async () => {
       await controller.patch(req, res, next);
-      expect(res.send).toHaveBeenCalled()
+      expect(res.send).toHaveBeenCalled();
+      expect(mockRepo.update).toHaveBeenCalled()
 
     })
     test('Then method delete should be used', async() => {
       await controller.deleteById(req, res, next);
       expect(res.send).toHaveBeenCalled()
-      // Expect(mockRepo.delete).toHaveBeenCalled()//VA EL NOMBRE DEL MÉTODO DEL REPO
+      expect(mockRepo.delete).toHaveBeenCalled()// VA EL NOMBRE DEL MÉTODO DEL REPO
     })
   });
 });
