@@ -93,7 +93,7 @@ describe('Given a FilmController class', () => {
     //   expect(mockRepo.search).toHaveBeenCalled();
     // });
     test('Then method post should be used', async () => {
-       controller.post(req, res, next)
+       await controller.post(req, res, next)
       expect(res.send).toHaveBeenCalled();
       expect(mockRepo.create).toHaveBeenCalled();
     });
