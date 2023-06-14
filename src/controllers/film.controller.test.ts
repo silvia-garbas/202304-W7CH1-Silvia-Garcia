@@ -109,3 +109,53 @@ describe('Given a FilmController class', () => {
     });
   });
 });
+describe('Given a film controller', () => {
+  const error = new Error('Test Error');
+  const mockRepo = {
+    query: jest.fn().mockRejectedValue(error),
+    queryById: jest.fn().mockRejectedValue(error),
+    search: jest.fn().mockRejectedValue(error),
+    create: jest.fn().mockRejectedValue(error),
+    update: jest.fn().mockRejectedValue(error),
+    delete: jest.fn().mockRejectedValue(error),
+  } as FilmRepo;
+
+  const req = {
+    params: { id: '1' },
+    body: { id: '2', data: '' },
+  } as unknown as Request;
+  const res = { send: jest.fn(), status: jest.fn() } as unknown as Response;
+  const next = jest.fn() as NextFunction;
+
+  const controller = new FilmController(mockRepo as unknown as Repo<Film>);
+  describe('When it is instantiated and getAll method is called without valid input', () => {
+    test('Then next(error) should have been called', async () => {
+      await controller.getAll(req, res, next);
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+  describe('When it is instantiated and getById method is called without valid input', () => {
+    test('Then next(error) should have been called', async () => {
+      await controller.getById(req, res, next);
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+  describe('When it is instantiated and post method is called without valid input', () => {
+    test('Then next(error) should have been called', async () => {
+      await controller.post(req, res, next);
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+  describe('When it is instantiated and patch method is called without valid input', () => {
+    test('Then next(error) should have been called', async () => {
+      await controller.patch(req, res, next);
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+  describe('When it is instantiated and delete method is called without valid input', () => {
+    test('Then next(error) should have been called', async () => {
+      await controller.deleteById(req, res, next);
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+});
