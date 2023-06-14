@@ -38,7 +38,7 @@ describe('Given SampleController class', () => {
     })
     test('Then method patch should be used', async () => {
       await controller.patch(req, res, next);
-      expect(res.send).toHaveBeenCalled()
+      expect(res.send).toHaveBeenCalled();
 
     })
     test('Then method delete should be used', async() => {
