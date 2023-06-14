@@ -5,7 +5,7 @@ import { Repo } from './repo.js';
 import { HttpError } from '../types/http.error.js';
 const debug = createDebug('W6:FilmRepo');
 
-export class FilmRepo implements Repo<Film> {
+export class FilmRepo implements Omit<Repo<Film>, 'search'> {
   constructor() {
     debug('Instantiated');
   }
