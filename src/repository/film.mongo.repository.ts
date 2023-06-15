@@ -22,11 +22,6 @@ export class FilmRepo implements Repo<Film> {
     return result;
   }
 
-  async create(data: Omit<Film, 'id'>): Promise<Film> {
-    const newBook = await FilmModel.create(data);
-    return newBook;
-  }
-
   async search({
     key,
     value,
@@ -36,6 +31,11 @@ export class FilmRepo implements Repo<Film> {
   }): Promise<Film[]> {
     const result = await FilmModel.find({ [key]: value }).exec();
     return result;
+  }
+
+  async create(data: Omit<Film, 'id'>): Promise<Film> {
+    const newFilm = await FilmModel.create(data);
+    return newFilm;
   }
 
   async update(id: string, data: Partial<Film>): Promise<Film> {

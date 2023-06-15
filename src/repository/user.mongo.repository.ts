@@ -2,7 +2,9 @@ import { UserModel } from './user.mongo.model.js';
 import createDebug from 'debug';
 import { User } from '../entities/user.js';
 import { Repo } from './repo.js';
+import { HttpError } from '../types/http.error.js';
 
+// TEMP import { HttpError } from '../types/http.error.js';
 const debug = createDebug('W6:UserRepo');
 
 export class UserRepo implements Partial<Repo<User>> {
@@ -13,6 +15,13 @@ export class UserRepo implements Partial<Repo<User>> {
   async query(): Promise<User[]> {
     const aData = await UserModel.find().exec();
     return aData;
+  }
+
+  async queryById(id: string): Promise<User> {
+    const result = await UserModel.findById(id).exec();
+    if (result === null)
+      throw new HttpError(404, 'Not found', 'Bad id for the query');
+    return result;
   }
 
   async search({
@@ -27,8 +36,7 @@ export class UserRepo implements Partial<Repo<User>> {
   }
 
   async create(data: Omit<User, 'id'>): Promise<User> {
-    const newBook = await UserModel.create(data);
-    return newBook;
+    const newUser = await UserModel.create(data);
+    return newUser;
   }
 }
-

@@ -1,12 +1,24 @@
 import { NextFunction, Request, Response } from 'express';
 import { Repo } from '../repository/repo.js';
-
+import { ApiResponse } from '../types/response.api.js';
 export abstract class Controller<T extends { id: string | number }> {
   protected repo!: Repo<T>;
 
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      res.send(await this.repo.query());
+      // Const length = req.query.length || 20;
+      // const page = req.query.length || 1;
+      // Proceso paginación iría aquí
+
+      const items = await this.repo.query();
+
+      const response: ApiResponse = {
+        items,
+        page: 1,
+        count: items.length,
+      };
+      console.log(req.body);
+      res.send(response);
     } catch (error) {
       next(error);
     }
@@ -23,7 +35,7 @@ export abstract class Controller<T extends { id: string | number }> {
   async post(req: Request, res: Response, next: NextFunction) {
     try {
       res.status(201);
-      res.send(await this.repo.create(req.body));
+      if (!req.body.payload) res.send(await this.repo.create(req.body)); // Le envia el payload al body
     } catch (error) {
       next(error);
     }

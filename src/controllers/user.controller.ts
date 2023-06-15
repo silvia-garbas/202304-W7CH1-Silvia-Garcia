@@ -3,8 +3,10 @@ import { UserRepo } from '../repository/user.mongo.repository.js';
 
 import createDebug from 'debug';
 const debug = createDebug('W6:FilmController');
-import { AuthServices } from '../services/auth.js';
+import { AuthServices, PayLoadToken } from '../services/auth.js';
 import { HttpError } from '../types/http.error.js';
+import { LoginResponse } from '../types/response.api.js';
+
 
 export class UserController {
   // eslint-disable-next-line no-unused-vars
@@ -24,37 +26,49 @@ export class UserController {
     }
   }
 
-
   async login(req: Request, res: Response, next: NextFunction) {
     // Viene de post
     try {
-      if(!req.body.user || !req.body.passwd){
-      throw new HttpError(400, 'Bad request', 'User or password invalid')
-    }
+      if (!req.body.user || !req.body.passwd) {
+        throw new HttpError(400, 'Bad request', 'User or password invalid');
+      }
 
-let data = await this.repo.search({key: 'userName', value: req.body.user})
-if(!data.length){
-  data = await this.repo.search({
-    key: 'email',
-    value: req.body.user,
-  })
+      let data = await this.repo.search({
+        key: 'userName',
+        value: req.body.user,
+      });
+      if (!data.length) {
+        data = await this.repo.search({
+          key: 'email',
+          value: req.body.user,
+        });
+      }
+
+      if (!data.length) {
+        throw new HttpError(400, 'Bad request', 'User or password invalid');
+      }
+
+      const isUserValid = await AuthServices.compare(
+        req.body.passwd,
+        data[0].passwd
+      );
+
+      if (!isUserValid) {
+        throw new HttpError(400, 'Bad request', 'User or password invalid');
+      }
+
+      const payload: PayLoadToken = {
+        id: data[0].id,
+        userName: data[0].userName
+      };
+      const token = AuthServices.createJWT(payload) // Devuelve string que corresponde al token ya formado
+// eslint-disable-next-line no-multi-assign
+const response : LoginResponse = {
+  token,
+  user: data [0]
 }
 
-if(!data.length){
-
-      throw new HttpError(400, 'Bad request', 'User or password invalid')
-}
-
-const isUserValid = await AuthServices.compare(req.body.passwd, data[0].passwd)
-
-if(!isUserValid){
-  throw new HttpError(400, 'Bad request', 'User or password invalid')
-
-}
-
-res.send(data[0])
-
-
+      res.send(response);
     } catch (error) {
       next(error);
     }
