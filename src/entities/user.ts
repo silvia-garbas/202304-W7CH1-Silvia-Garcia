@@ -1,13 +1,11 @@
 export type User = {
   id: string;
-  userName: string,
-  email: string,
-  passwd: string
-}
+  userName: string;
+  email: string;
+  passwd: string;
+};
 
 export type UserLogin = {
-
-  user: string, // UserName/email
-  passwd: string
-
-}
+  user: String; // UserName/email
+  passwd: string;
+};

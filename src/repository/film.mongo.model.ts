@@ -11,6 +11,10 @@ const filmSchema = new Schema<Film>({
     type: String,
     required: true,
   },
+  owner:{
+    type: Schema.Types.ObjectId,// Permite crear relaciones entre tablas con mongoose
+    ref: 'User'
+  }
 });
 
 filmSchema.set('toJSON', {
