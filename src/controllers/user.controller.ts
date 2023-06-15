@@ -3,7 +3,7 @@ import { UserRepo } from '../repository/user.mongo.repository.js';
 
 import createDebug from 'debug';
 const debug = createDebug('W6:FilmController');
-import { AuthServices, PayLoadToken } from '../services/auth.js';
+import { AuthServices, PayloadToken } from '../services/auth.js';
 import { HttpError } from '../types/http.error.js';
 import { LoginResponse } from '../types/response.api.js';
 
@@ -57,7 +57,7 @@ export class UserController {
         throw new HttpError(400, 'Bad request', 'User or password invalid');
       }
 
-      const payload: PayLoadToken = {
+      const payload: PayloadToken = {
         id: data[0].id,
         userName: data[0].userName
       };
