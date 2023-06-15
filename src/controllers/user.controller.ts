@@ -24,37 +24,38 @@ export class UserController {
     }
   }
 
-
   async login(req: Request, res: Response, next: NextFunction) {
     // Viene de post
     try {
-      if(!req.body.user || !req.body.passwd){
-      throw new HttpError(400, 'Bad request', 'User or password invalid')
-    }
+      if (!req.body.user || !req.body.passwd) {
+        throw new HttpError(400, 'Bad request', 'User or password invalid');
+      }
 
-let data = await this.repo.search({key: 'userName', value: req.body.user})
-if(!data.length){
-  data = await this.repo.search({
-    key: 'email',
-    value: req.body.user,
-  })
-}
+      let data = await this.repo.search({
+        key: 'userName',
+        value: req.body.user,
+      });
+      if (!data.length) {
+        data = await this.repo.search({
+          key: 'email',
+          value: req.body.user,
+        });
+      }
 
-if(!data.length){
+      if (!data.length) {
+        throw new HttpError(400, 'Bad request', 'User or password invalid');
+      }
 
-      throw new HttpError(400, 'Bad request', 'User or password invalid')
-}
+      const isUserValid = await AuthServices.compare(
+        req.body.passwd,
+        data[0].passwd
+      );
 
-const isUserValid = await AuthServices.compare(req.body.passwd, data[0].passwd)
+      if (!isUserValid) {
+        throw new HttpError(400, 'Bad request', 'User or password invalid');
+      }
 
-if(!isUserValid){
-  throw new HttpError(400, 'Bad request', 'User or password invalid')
-
-}
-
-res.send(data[0])
-
-
+      res.send(data[0]);
     } catch (error) {
       next(error);
     }
