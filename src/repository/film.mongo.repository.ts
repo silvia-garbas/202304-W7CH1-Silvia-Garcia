@@ -11,15 +11,21 @@ export class FilmRepo implements Repo<Film> {
   }
 
   async query(): Promise<Film[]> {
-    const aData = await FilmModel.find().exec();
+    const aData = await FilmModel.find().populate('owner', {films: 0}).exec();
     return aData;
   }
 
   async queryById(id: string): Promise<Film> {
-    const result = await FilmModel.findById(id).exec();
+    const result = await FilmModel.findById(id).populate('owner', {films: 0}).exec();
+    // Ejecuta la función findById y Devuelve un objeto que tiene la propeidad populate
+    // lo único que pued ellevar un . delante es eun objeto
+    // la propiedad populate, lo único en js que puede llever () es una función
+   // populate devuelve un objeto
     if (result === null)
       throw new HttpError(404, 'Not found', 'Bad id for the query');
     return result;
+
+    // Result vale lo que devuelva exec
   }
 
   async search({
@@ -41,7 +47,9 @@ export class FilmRepo implements Repo<Film> {
   async update(id: string, data: Partial<Film>): Promise<Film> {
     const newBook = await FilmModel.findByIdAndUpdate(id, data, {
       new: true,
-    }).exec();
+    })
+      .populate('owner', { films: 0 })
+      .exec();
     if (newBook === null)
       throw new HttpError(404, 'Not found', 'Bad id for the update');
     return newBook;

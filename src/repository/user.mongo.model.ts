@@ -18,6 +18,12 @@ export const userSchema = new Schema<User>({
     unique: true,
   },
 });
+// Descomento
+//  , films: [{
+//     tyoe: Schema.Types.ObjectId,
+//     ref: 'Film'
+//   }]
+// });
 
 userSchema.set('toJSON', {
   transform(_document, returnedObject) {
