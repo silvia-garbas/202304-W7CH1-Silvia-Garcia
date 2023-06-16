@@ -52,7 +52,7 @@ function main() {
         const urlFilms = url + '/film';
         const response = await fetch(urlFilms, {
             headers: {
-                Authorization: 'Bearer' + state.token,
+                Authorization: 'Bearer ' + state.token, // Este espacio muy importante
             },
         });
         const result = await response.json();

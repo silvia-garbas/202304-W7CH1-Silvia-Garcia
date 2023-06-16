@@ -6,11 +6,13 @@ const debug = createDebug('W6:FilmController');
 import { AuthServices, PayloadToken } from '../services/auth.js';
 import { HttpError } from '../types/http.error.js';
 import { LoginResponse } from '../types/response.api.js';
+import { Controller } from './controller.js';
+import { User } from '../entities/user.js';
 
-
-export class UserController {
+export class UserController extends Controller<User> {
   // eslint-disable-next-line no-unused-vars
   constructor(protected repo: UserRepo) {
+    super();
     debug('Instantiated');
   }
 
@@ -30,6 +32,7 @@ export class UserController {
     // Viene de post
     try {
       if (!req.body.user || !req.body.passwd) {
+        // Analizamos lo que no sha llegado
         throw new HttpError(400, 'Bad request', 'User or password invalid');
       }
 
@@ -59,14 +62,14 @@ export class UserController {
 
       const payload: PayloadToken = {
         id: data[0].id,
-        userName: data[0].userName
+        userName: data[0].userName,
       };
-      const token = AuthServices.createJWT(payload) // Devuelve string que corresponde al token ya formado
-// eslint-disable-next-line no-multi-assign
-const response : LoginResponse = {
-  token,
-  user: data [0]
-}
+      const token = AuthServices.createJWT(payload); // Devuelve string que corresponde al token ya formado
+      // eslint-disable-next-line no-multi-assign
+      const response: LoginResponse = {
+        token,
+        user: data[0],
+      };
 
       res.send(response);
     } catch (error) {
